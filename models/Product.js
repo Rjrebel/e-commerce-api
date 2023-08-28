@@ -7,10 +7,10 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    quantity : {
+    quantity: {
       type: Number,
       required: true,
-    }
+    },
   },
   {
     timestamps: true,

@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
 
-// Fetching all habits
+// Fetching all products
 module.exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
@@ -12,10 +12,10 @@ module.exports.getProducts = async (req, res) => {
   }
 };
 
-// Creating a habit
+// Creating a product
 module.exports.create = async (req, res) => {
   try {
-    const { name, quantity } = req.body; 
+    const { name, quantity } = req.body;
 
     const product = new Product({
       name,
@@ -24,14 +24,14 @@ module.exports.create = async (req, res) => {
 
     const savedProduct = await product.save();
 
-    res.status(200).json({ date : savedProduct});
+    res.status(200).json({ date: savedProduct });
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Internal server error.");
   }
 };
 
-// Deleting the habit
+// Deleting the product
 module.exports.delete = async (req, res) => {
   try {
     // Find a habit to be deleted and check if it exists
@@ -42,23 +42,21 @@ module.exports.delete = async (req, res) => {
 
     // actually deleting the habit
     product = await Product.findByIdAndDelete(req.params.id);
-    return res.json({ data : {  message: "Product successfully deleted" }});
+    return res.json({ data: { message: "Product successfully deleted" } });
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Internal server error.");
   }
 };
 
-// Updating the status of habit on particular date
+// Updating the quantity of product
 module.exports.update = async (req, res) => {
   try {
-
     let product = await Product.findById(req.params.id);
 
     if (!product) {
       return res.status(404).send("Product not found.");
     }
-
 
     let newProduct = { name: product.name, quantity: req.query.number };
 
@@ -68,7 +66,9 @@ module.exports.update = async (req, res) => {
       { new: true }
     );
 
-    return res.json({ data : {message: "Updated successfully.", product: product} });
+    return res.json({
+      data: { message: "Updated successfully.", product: product },
+    });
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: "Internal server error.", error });
